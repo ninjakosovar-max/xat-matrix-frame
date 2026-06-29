@@ -2,11 +2,15 @@
 <html lang="sq">
 <head>
     <style>
-        /* Sfondi i faqes mund të jetë çfarëdo ngjyre ose imazhi */
-        body { margin: 0; overflow: hidden; background-color: #000; }
-        
-        /* Canvas transparent */
-        #matrix { display: block; background: transparent; }
+        /* Sigurohemi që canvas të mos bllokojë klikimet në chat ose butona */
+        #matrix {
+            position: fixed; /* Qëndron fiksuar lart majtas */
+            top: 0;
+            left: 0;
+            z-index: 9999; /* Siguron që të jetë gjithmonë sipër */
+            pointer-events: none; /* Lejon klikimin e gjërave që ndodhen pas shkronjave */
+            background: transparent;
+        }
     </style>
 </head>
 <body>
@@ -17,18 +21,18 @@
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
+    // Caktojmë përmasat e faqes
     canvas.height = window.innerHeight;
-    canvas.width = 400; 
+    canvas.width = 400; // E mbajmë vetëm në anën e majtë
 
     const fontSize = 16;
     const columns = 8; 
     const drops = Array(columns).fill(1);
-    
     const text = "SHIJO MUZIKËN, SHIJO DIZAJNIN E MOS KOPJO";
 
     function draw() {
-        // Kjo linjë krijon efektin e zbehjes (trail)
-        // E kemi bërë që të jetë transparente në vend të së zezës
+        // Efekti i rrjedhjes (Trail)
+        // Nëse vë re që po të nxin sfondin, ndrysho '0.05' në '0.02'
         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -45,7 +49,6 @@
             drops[i]++;
         }
     }
-
     setInterval(draw, 60);
 </script>
 
