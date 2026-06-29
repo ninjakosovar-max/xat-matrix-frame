@@ -2,8 +2,15 @@
 <html lang="sq">
 <head>
     <style>
-        body { margin: 0; overflow: hidden; background-color: transparent; }
-        #matrix { display: block; background: transparent; }
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: transparent; 
+        }
+        #matrix { 
+            display: block; 
+            background: transparent; 
+        }
     </style>
 </head>
 <body>
@@ -15,13 +22,13 @@
     const ctx = canvas.getContext('2d');
 
     canvas.height = window.innerHeight;
-    canvas.width = 200; 
+    canvas.width = window.innerWidth;
 
     const fontSize = 20;
     const columns = 6;
+    const columnWidth = 40;
     const drops = Array(columns).fill(0);
     
-    // Kjo shërben për të kontrolluar ritmin e rënies
     let frameCount = 0;
     
     const djs = [
@@ -32,25 +39,28 @@
     const activeNames = Array(columns).fill(0).map(() => Math.floor(Math.random() * djs.length));
 
     function draw() {
-        // Sfondi transparent
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.02)'; 
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Sfondi plotesisht transparent - vetem pastrim minimal
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = '#FF0000';
         ctx.font = 'bold ' + fontSize + 'px monospace';
 
-        // Përdorim frameCount për të kontrolluar shpejtësinë
-        // Shkronjat ndryshojnë vetëm çdo 3 frame (ngadalësim i kontrolluar)
+        // Ngadalësim i mëtejshëm - ndryshon çdo 5 frame
         frameCount++;
-        if (frameCount % 3 !== 0) return;
+        if (frameCount % 5 !== 0) return;
 
-        for (let i = 0; i < drops.length; i++) {
+        for (let i = 0; i < columns; i++) {
             const name = djs[activeNames[i]];
             const char = name.charAt(drops[i] % name.length);
             
-            ctx.fillText(char, i * 30 + 5, (drops[i] + 1) * fontSize);
+            // Pozicioni në anën e majt (6 kolona të vogla)
+            const xPos = i * columnWidth + 10;
+            const yPos = (drops[i] + 1) * fontSize;
+            
+            ctx.fillText(char, xPos, yPos);
 
-            if ((drops[i] + 1) * fontSize > canvas.height && Math.random() > 0.95) {
+            // Kur arrin në fund, rifillo
+            if (yPos > canvas.height) {
                 drops[i] = 0;
                 activeNames[i] = Math.floor(Math.random() * djs.length);
             } else {
@@ -59,8 +69,13 @@
         }
     }
 
-    // Shpejtësia bazë 50ms, por e ngadalësuar nga kushti frameCount
-    setInterval(draw, 50);
+    // Intervali më i gjatë për shpejtësi më të ngadaltë
+    setInterval(draw, 100);
+
+    window.addEventListener('resize', () => {
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+    });
 </script>
 
 </body>
