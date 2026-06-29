@@ -2,8 +2,8 @@
 <html lang="sq">
 <head>
     <style>
-        body { background-color: black; margin: 0; overflow: hidden; }
-        canvas { display: block; }
+        body { background-color: transparent; margin: 0; overflow: hidden; }
+        canvas { display: block; background-color: transparent; }
     </style>
 </head>
 <body>
@@ -12,7 +12,7 @@
 
 <script>
     const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
 
     canvas.height = window.innerHeight;
     canvas.width = 400; // Gjerësia për kolonat
@@ -25,8 +25,7 @@
     const text = "SHIJO MUZIKËN, SHIJO DIZAJNIN E MOS KOPJO";
 
     function draw() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = '#0F0';
         ctx.font = fontSize + 'px monospace';
