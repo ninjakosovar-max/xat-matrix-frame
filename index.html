@@ -2,14 +2,26 @@
 <html lang="sq">
 <head>
     <style>
-        body { 
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body { 
             margin: 0; 
+            padding: 0;
             overflow: hidden; 
-            background-color: transparent; 
+            background: transparent !important;
+            width: 100%;
+            height: 100%;
         }
         #matrix { 
             display: block; 
-            background: transparent; 
+            background: transparent !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -19,7 +31,7 @@
 
 <script>
     const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
 
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
@@ -39,7 +51,7 @@
     const activeNames = Array(columns).fill(0).map(() => Math.floor(Math.random() * djs.length));
 
     function draw() {
-        // Sfondi plotesisht transparent - vetem pastrim minimal
+        // Sfondi kompletisht transparent - vetem e zezim shume e lehte
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = '#FF0000';
