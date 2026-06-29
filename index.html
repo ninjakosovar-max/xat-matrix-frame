@@ -2,16 +2,8 @@
 <html lang="sq">
 <head>
     <style>
-        body { 
-            margin: 0; 
-            overflow: hidden; 
-            background-color: #000;
-            font-family: monospace;
-        }
-        #matrix { 
-            display: block; 
-            background: #000;
-        }
+        body { margin: 0; overflow: hidden; background-color: transparent; }
+        #matrix { display: block; background: transparent; }
     </style>
 </head>
 <body>
@@ -23,67 +15,52 @@
     const ctx = canvas.getContext('2d');
 
     canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    canvas.width = 200; 
 
     const fontSize = 20;
+    const columns = 6;
+    const drops = Array(columns).fill(0);
+    
+    // Kjo shërben për të kontrolluar ritmin e rënies
+    let frameCount = 0;
     
     const djs = [
-        "DJ QUEEN",
-        "DJ ANONYMOUS",
-        "DJ TRIMRESHA",
-        "DJ VITO",
-        "DJ LANDI",
-        "DJ EMANUEL",
-        "DJ BESI"
+        "DJ QUEEN", "DJ ANONYMOUS", "DJ TRIMRESHA", 
+        "DJ VITO", "DJ LANDI", "DJ EMANUEL", "DJ BESI"
     ];
 
-    // Krijo një kolon për secilin DJ
-    const columns = djs.map((dj, index) => ({
-        name: dj,
-        x: (index + 1) * (canvas.width / (djs.length + 1)),
-        y: Math.random() * canvas.height,
-        speed: Math.random() * 2 + 1,
-        characters: dj.split(''),
-        charIndex: 0
-    }));
+    const activeNames = Array(columns).fill(0).map(() => Math.floor(Math.random() * djs.length));
 
     function draw() {
-        // Sfondi i zi me efekt trail
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        // Sfondi transparent
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.02)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.font = fontSize + 'px monospace';
-        ctx.fillStyle = '#0F0';
+        ctx.fillStyle = '#FF0000';
+        ctx.font = 'bold ' + fontSize + 'px monospace';
 
-        columns.forEach(col => {
-            // Merr karakterin aktual
-            const char = col.characters[col.charIndex];
+        // Përdorim frameCount për të kontrolluar shpejtësinë
+        // Shkronjat ndryshojnë vetëm çdo 3 frame (ngadalësim i kontrolluar)
+        frameCount++;
+        if (frameCount % 3 !== 0) return;
+
+        for (let i = 0; i < drops.length; i++) {
+            const name = djs[activeNames[i]];
+            const char = name.charAt(drops[i] % name.length);
             
-            // Vizato karakterin
-            ctx.fillText(char, col.x, col.y);
+            ctx.fillText(char, i * 30 + 5, (drops[i] + 1) * fontSize);
 
-            // Lëvizja vertikale
-            col.y += col.speed;
-
-            // Kalim në karakterin e ardhshëm
-            col.charIndex = (col.charIndex + 1) % col.characters.length;
-
-            // Kthehu në fillim kur arrin në fund
-            if (col.y > canvas.height) {
-                col.y = 0;
-                col.charIndex = 0;
+            if ((drops[i] + 1) * fontSize > canvas.height && Math.random() > 0.95) {
+                drops[i] = 0;
+                activeNames[i] = Math.floor(Math.random() * djs.length);
+            } else {
+                drops[i]++;
             }
-        });
+        }
     }
 
-    // Redho çdo 50ms për animacion të qetë
+    // Shpejtësia bazë 50ms, por e ngadalësuar nga kushti frameCount
     setInterval(draw, 50);
-
-    // Përditëso canvas kur ndryshon madhësia e dritares
-    window.addEventListener('resize', () => {
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-    });
 </script>
 
 </body>
