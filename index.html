@@ -2,14 +2,13 @@
 <html lang="sq">
 <head>
     <style>
-        /* Sigurohemi që canvas të mos bllokojë klikimet në chat ose butona */
+        body { margin: 0; padding: 0; }
         #matrix {
-            position: fixed; /* Qëndron fiksuar lart majtas */
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: 9999; /* Siguron që të jetë gjithmonë sipër */
-            pointer-events: none; /* Lejon klikimin e gjërave që ndodhen pas shkronjave */
-            background: transparent;
+            z-index: 9999;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -21,9 +20,8 @@
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d', { alpha: true });
 
-    // Caktojmë përmasat e faqes
     canvas.height = window.innerHeight;
-    canvas.width = 400; // E mbajmë vetëm në anën e majtë
+    canvas.width = 400;
 
     const fontSize = 16;
     const columns = 8; 
@@ -31,7 +29,7 @@
     const text = "SHIJO MUZIKËN, SHIJO DIZAJNIN E MOS KOPJO";
 
     function draw() {
-        // Transparent clearRect në vend të fillRect
+        // Pastro canvas plotësisht - transparent
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = '#0F0';
