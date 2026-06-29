@@ -19,7 +19,7 @@
 
 <script>
     const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
 
     // Caktojmë përmasat e faqes
     canvas.height = window.innerHeight;
@@ -31,10 +31,8 @@
     const text = "SHIJO MUZIKËN, SHIJO DIZAJNIN E MOS KOPJO";
 
     function draw() {
-        // Efekti i rrjedhjes (Trail)
-        // Nëse vë re që po të nxin sfondin, ndrysho '0.05' në '0.02'
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Transparent clearRect në vend të fillRect
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = '#0F0';
         ctx.font = fontSize + 'px monospace';
