@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <style>
+        body { background-color: black; margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = 400; // Gjerësia për kolonat
+
+    const fontSize = 16;
+    const columns = 8; 
+    const drops = Array(columns).fill(1);
+    
+    // Teksti që do të shfaqet
+    const text = "SHIJO MUZIKËN, SHIJO DIZAJNIN E MOS KOPJO";
+
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#0F0';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            // Zgjedh një karakter të rastësishëm nga teksti yt
+            const char = text.charAt(Math.floor(Math.random() * text.length));
+            
+            ctx.fillText(char, i * fontSize * 3, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 60);
+</script>
+
+</body>
+</html>
